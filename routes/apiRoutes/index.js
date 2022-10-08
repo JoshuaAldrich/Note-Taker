@@ -11,6 +11,19 @@ router.get("/notes", (req, res) => {
 router.post("/notes", (req, res) => {
   const title = req.body.title;
   const text = req.body.text;
+  const data = fs.readFileSync(path.join(__dirname, "../../db/db.json"));
+  const notes = JSON.parse(data);
+  let note = {
+    title,
+    text,
+    id: notes.length,
+  };
+  notes.push(note);
+  fs.writeFileSync(
+    path.join(__dirname, "../../db/db.json"),
+    JSON.stringify(notes)
+  );
+  res.json(note);
 });
 
 module.exports = router;
