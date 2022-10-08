@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const path = require("path");
 const fs = require("fs");
+const { json } = require("express");
 
 router.get("/notes", (req, res) => {
   const data = fs.readFileSync(path.join(__dirname, "../../db/db.json"));
@@ -24,6 +25,24 @@ router.post("/notes", (req, res) => {
     JSON.stringify(notes)
   );
   res.json(note);
+});
+
+// delete a note by the selected ID
+router.delete("/notes/:id", (req, res) => {
+  const id = req.params.id;
+  const data = fs.readFileSync(path.join(__dirname, "../../db/db.json"));
+  let notes = JSON.parse(data);
+  notes = notes.filter((note) => {
+    if (note.id != id) {
+      return true;
+    } else return false;
+  });
+
+  fs.writeFileSync(
+    path.join(__dirname, "../../db/db.json"),
+    JSON.stringify(notes)
+  );
+  res.json("Note deleted");
 });
 
 module.exports = router;
