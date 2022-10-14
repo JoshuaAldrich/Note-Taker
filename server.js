@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRoutes);
 app.use("/", htmlRoutes);
 
+//port you're connected to
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}.`);
 });
